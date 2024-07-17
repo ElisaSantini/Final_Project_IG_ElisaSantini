@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>MiniGames</title>
+        <!-- <style>
+            body { margin: 0; }
+        </style> -->
+        <link rel="stylesheet" href="./index.css">
+
+    </head>
+    <body>
+        
+        <script src="../js/utils/three.min.js"></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script>
+        <script src="../js/utils/ammo.js"></script>
+        <script src="../js/main.js"></script>
+        <script src="../js/utils/OrbitControls.js"></script>
+        
+
+        <div id="intro-panel">
+            <div id="intro-column">
+                <div id="intro-title">MiniGames</div>
+                <!-- <button id="start-button">START NEW GAME</button> -->
+                <button id="game1-button">GAME 1</button>
+                <button id="game2-button">GAME 2</button>
+                <button id="game3-button">GAME 3</button>
+            </div>
+        </div>
+        <div id="instruction1">
+            <div id="instruction1_column">
+                <div id="instrucion1-title">Break the tower!</div>
+                <!-- <button id="start-button">START NEW GAME</button> -->
+                <!-- <button id="game1-button">GAME 1</button>
+                <button id="game2-button">GAME 2</button>
+                <button id="game3-button">GAME 3</button> -->
+                <h1>Throw marbles to the lego tower that your brother has built.</h1>
+                <p>1. Drad and drop the mouse to rotate camera.</p>
+                <p>2. Left click to throw.</p>
+                <p>Hurry up before your parents catch you!.</p>
+                <!-- <button id="start1-button">START</button> -->
+                <button onclick="showGame1Instructions()">Game 1</button>
+                <button id="Back1-button">Back to Selection</button>
+            </div>
+        </div>
+        <div id="instruction2">
+            <div id="instruction2_column">
+                <div id="instrucion2-title">Dirty laundry!</div>
+                <!-- <button id="start-button">START NEW GAME</button> -->
+                <!-- <button id="game1-button">GAME 1</button>
+                <button id="game2-button">GAME 2</button>
+                <button id="game3-button">GAME 3</button> -->
+                <h1>Your dad has cleaned the white towel. Get it dirty again by letting a ball pass under it.</h1>
+                <p>Move the ball with W,A,S,D.</p>
+                <p>Hurry up before your parents catch you!.</p>
+                <button onclick="showGame2Instructions()">Game 2</button>
+                <button id="Back2-button">Back to Selection</button>
+            </div>
+        </div>
+        <div id="instruction3">
+            <div id="instruction3_column">
+                <div id="instrucion3-title">Pop the baloons!</div>
+                <!-- <button id="start-button">START NEW GAME</button> -->
+                <!-- <button id="game1-button">GAME 1</button>
+                <button id="game2-button">GAME 2</button>
+                <button id="game3-button">GAME 3</button> -->
+                <h1>Pop the baloons of your sibling's birthday party</h1>
+                <p>1. Move around with W,A,S,D.</p>
+                <p>2. Rotate the tube with I,J,K,L.</p>
+                <p>3. Press spacebar to shoot.</p>
+                <p>Hurry up before your parents catch you!.</p>
+                <button onclick="showGame3Instructions()">Game 3</button>
+                <button id="Back3-button">Back to Selection</button>
+            </div>
+        </div>
+        <div id="score1">
+            <!-- <div id="title">Countdown</div> -->
+            <!-- <div class="line"></div> -->
+            <div id="Countdown1">Countdown: </div>
+            <!-- <div id="distance">Distance: </div>
+            <div id="points">Points: 0</div> -->
+        </div>
+        <div id="score2">
+            <div id="title">Score</div>
+            <div class="line"></div>
+            <div id="Countdown2">Countdown: </div>
+            <!-- <div id="distance">Distance: </div> -->
+            <div id="points2">Towels left:</div>
+        </div>
+        <div id="score3">
+            <div id="title">Score</div>
+            <div class="line"></div>
+            <div id="Countdown3">Countdown: </div>
+            <!-- <div id="distance">Distance: </div> -->
+            <div id="points3">Baloons left:</div>
+        </div>
+
+        <div id="game_over">
+            <div id="game_over_column">
+              <div id="game_over_title">Game over!</div>
+              <!-- <div id="game_over_tscore">Total Score: <div id="game-over-score"></div></div>
+              <div id="game_over_distance">Distance: <div id="game-over-distance"></div></div>
+              <div id="game_over_points">Points: <div id="game-over-score"></div></div> -->
+              <button id="again1-button">Play Again</button>
+              <!-- <br> -->
+              <button id="back-again-button">Menu</button>
+            </div>
+        </div>
+
+        <!-- <div id="loading">
+            <div id="loading_column">
+              <div id="loading_title">loading</div>
+            </div>
+            <div id="loading_gif"></div>
+            
+        </div> -->
+
+        <!-- <div id="game-over-panel">
+            <div id="game-over-column">
+                <div id="game-over-title">GAME OVER!</div>
+                <div id="game-over-distance-row">Distance: <div id="game-over-distance"></div></div>
+                <button id="try-again-button">TRY AGAIN</button>
+            </div>
+        </div> -->
+        <script>
+        function showGame1Instructions() {
+            window.location.href = "game1.html";
+        }
+        function showGame2Instructions() {
+            window.location.href = "game2.html";
+        }
+        function showGame3Instructions() {
+            window.location.href = "game3.html";
+        }
+        </script>
+       
+    </body>
+</html>

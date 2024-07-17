@@ -1,0 +1,266 @@
+/* @font-face {
+    font-family: 'Retro Gaming';
+    src: url('./font/RetroGaming.woff2') format('woff2'),
+        url('./font/RetroGaming.woff') format('woff'),
+        url('./font/RetroGaming.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+} */
+
+#info-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.heart-image {
+    width: 40px;
+    height: auto;
+    margin: 0 5px;
+}
+
+#intro-panel {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../immages/camera.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: 10;
+}
+#loading_gif {
+    display:  'none';
+    position: absolute;
+    margin-top: 9rem;
+    height: 307px;
+    width: 307px;
+    background: url('loading.svg') no-repeat;
+  }
+
+#instruction1,
+#loading, #game_over, #win {
+    display: none;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../immages/toy_room.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: 10;
+    display : 'none';
+}
+#instruction2,
+#loading2 {
+    display: none;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../immages/sky.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: 10;
+    display : 'none';
+}
+#instruction3,
+#loading3 {
+    display: none;
+    place-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../immages/party.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: 10;
+    display : 'none';
+}
+
+#loading_gif {
+    position: absolute;
+    margin-top: 9rem;
+    height: 307px;
+    width: 307px;
+    background: url('loading.svg') no-repeat;
+}
+
+#game-over-panel,
+#win {
+    display: none;
+}
+
+#intro-column,
+#game-over-column, 
+#instruction3_column {
+    text-align: center;
+}
+
+#intro-title,
+#game-over-title, 
+#instrucion1-title,
+#instrucion2-title,
+#instrucion3-title {
+    /* font-family: 'Retro Gaming'; */
+    font-weight: bold;
+    font-size: 7em;
+    margin-bottom: 1em;
+    color: rgb(242, 9, 9);
+    text-shadow: -2px -2px 0 rgb(252, 250, 250), 2px -2px 0 rgb(248, 246, 246), -2px 2px 0 rgb(252, 251, 251), 2px 2px 0 rgb(252, 250, 250);
+}
+
+#score1,
+#score2,
+#score3 {
+    display : 'none';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20%;
+    height: fit-content;
+    font-size: 1.9rem;
+    color: var(--main_color);/*white;*/
+    border: 1px solid white;
+    padding: 0.5rem;
+    font-family: 'SFDistantGalaxy';
+    margin-left: 0.5rem;
+    margin-top: 0.2rem;
+    background-color: rgb(241, 210, 31);
+}
+
+#score2 #title{
+    font-weight: bold;
+}
+#score3 #title{
+    font-weight: bold;
+}
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: white;
+    margin: 0.5rem 0;
+  }
+
+#distance-value {
+    /* font-family: 'Retro Gaming'; */
+    font-weight: bold;
+    color: white;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+}
+
+#game-over-distance,
+#game-over-distance-row {
+    /* font-family: 'Retro Gaming'; */
+    font-weight: bold;
+    font-size: 2em;
+    color: white;
+    margin-bottom: 1em;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+}
+
+#start1-button,
+#again1-button,
+#start2-button,
+#start3-button,
+#try-again-button, #game1-button, #game2-button, #game3-button {
+    background-color: orange;
+    color: white;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+    /* font-family: 'Retro Gaming'; */
+    font-weight: normal;
+    font-size: 4em;
+    border: 2px solid white;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+#game1-button{
+    background-color: rgb(63, 234, 16);
+    color: white;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+    /* font-family: 'Retro Gaming'; */
+    font-weight: normal;
+    font-size: 4em;
+    border: 2px solid white;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+#game2-button{
+    background-color: rgb(212, 16, 234);
+    color: white;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+    /* font-family: 'Retro Gaming'; */
+    font-weight: normal;
+    font-size: 4em;
+    border: 2px solid white;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+#game3-button{
+    background-color: rgb(16, 78, 234);
+    color: white;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+    /* font-family: 'Retro Gaming'; */
+    font-weight: normal;
+    font-size: 4em;
+    border: 2px solid white;
+    padding: 0.5rem;
+    cursor: pointer;
+    /*touch-action: manipulation;*/
+}
+
+#Back1-button,
+#Back2-button,
+#Back3-button, 
+#back-again-button{
+    background-color: rgb(129, 131, 134);
+    color: white;
+    text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+    /* font-family: 'Retro Gaming'; */
+    font-weight: normal;
+    font-size: 1em;
+    border: 2px solid rgb(8, 7, 7);
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+
+
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+}
