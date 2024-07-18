@@ -32,10 +32,9 @@ function start (){
     setupGraphics(0, 5, 10, camera_par);
     setupPhysicsWorld();
     createPlane('floor.avif');
-    createBaloon();
     createCilinder();
+    createBaloon();
     renderFrame();
-    document.getElementById('score3').style.display = 'grid';
     startTimer();
     
 
@@ -58,7 +57,7 @@ function setupPhysicsWorld(){
 
 }
 
-function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
+function setupGraphics(camerax, cameray, cameraz, camera_par){
 
     //create clock for timing
     clock = new THREE.Clock();
@@ -605,7 +604,7 @@ function createCilinder(){
 
     Character.position.set(pos.x, pos.y, pos.z);
     Character.quaternion.set(quat.x, quat.y, quat.z);
-    let colShape = new Ammo.btBoxShape(new Ammo.btVector3(scale.x * 0.5, scale.y * 0.5, scale.z * 0.5));
+    let colShape = new Ammo.btCylinderShape(radiusTop, radiusBottom, height);//new Ammo.btVector3(scale.x * 0.5, scale.y * 0.5, scale.z * 0.5)
     colShape.setMargin(0.05);
 
     const playerBody = createRigidBody(Character, colShape, mass, pos, quat);
@@ -640,8 +639,7 @@ function createBaloon() {
         line = new THREE.Line(geometry, material);
         line.name = 'Line_' + i;
         scene.add(line);
-        createParticleSystemFromGeometry(sphere, pos.x, pos.y, pos.z, i);
-        
+        createParticleSystemFromGeometry(sphere, pos.x, pos.y, pos.z, i);        
 
     }
 
@@ -650,7 +648,7 @@ function createBaloon() {
 }
 
 function createParticleSystemFromGeometry(geom, x, y, z, index) {
-    var psMat = new THREE.PointsMaterial({ size: 0.3, color: createRandomColor(), map: new THREE.TextureLoader().load("../immages/baloon.jpg") }); //https://threejs.org/examples/textures/758px-Canestra_di_frutta_(Caravaggio).jpg
+    var psMat = new THREE.PointsMaterial({ size: 0.3, color: createRandomColor(), map: new THREE.TextureLoader().load("../immages/baloon.jpg") });
     psMat.transparent = false;
     psMat.shadowSide = THREE.DoubleSide;
     var ps = new THREE.Points(geom, psMat);
@@ -690,6 +688,7 @@ function createParticleSystemFromGeometry(geom, x, y, z, index) {
     }
 
     avgVertexNormals_tot.push(avgVertexNormals);
+
 }
 
 const getRandomInt = (min, max) => {
@@ -697,24 +696,6 @@ const getRandomInt = (min, max) => {
     max = Math.floor(max);
     result = Math.floor(Math.random() * (max - min) + min);
     return result
-}
-
-function createParalellepiped( sx, sy, sz, mass, pos, quat, material ) {
-
-    const threeObject = new THREE.Mesh( new THREE.BoxGeometry( sx, sy, sz, 1, 1, 1 ), material );
-    const shape = new Ammo.btBoxShape( new Ammo.btVector3( sx * 0.5, sy * 0.5, sz * 0.5 ) );
-    shape.setMargin( 0.05 );
-
-    createRigidBody( threeObject, shape, mass, pos, quat );
-
-    return threeObject;
-
-}
-
-function createMaterial() {
-
-    return new THREE.MeshPhongMaterial( { color: createRandomColor() } );
-
 }
 
 function createRandomColor() {
@@ -727,7 +708,7 @@ function createRigidBody( threeObject, physicsShape, mass, pos, quat ) {
 
     threeObject.position.copy( pos );
     threeObject.quaternion.copy( quat );
-
+    
     const transform = new Ammo.btTransform();
     transform.setIdentity();
     transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
@@ -806,7 +787,10 @@ function updatePhysics( deltaTime ){
         
 
         }
+        
     }
+
+    
 
 
 }

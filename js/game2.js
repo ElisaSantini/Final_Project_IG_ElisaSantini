@@ -610,7 +610,7 @@ function createBall(texture){
     let mass = 100;
 
     //threeJS Section
-    ballObject = new THREE.Mesh(new THREE.IcosahedronGeometry( radius, 5 ));
+    ballObject = new THREE.Mesh(new THREE.IcosahedronGeometry( radius, 5 ), new THREE.MeshLambertMaterial({color: 'orange'}));
     let ball = ballObject;
     ball.position.set(pos.x, pos.y, pos.z);
     ball.name = "ball";
@@ -741,11 +741,12 @@ function createCloth(){
     const clothNumSegmentsY = clothHeight * 5;
     const margin = 0.05;
 
+    //FRONTAL CLOTH
     let clothPos = new THREE.Vector3(0, 5, 20 );
 
     clothGeometry1 = new THREE.PlaneBufferGeometry( clothWidth, clothHeight, clothNumSegmentsZ, clothNumSegmentsY );
-    clothGeometry1.translate( clothPos.x   - clothWidth * 0.5, clothPos.y + clothHeight * 0.5, clothPos.z ); //clothPos.z - clothWidth * 0.5
-    clothGeometry1.lookAt(-10,0,0);
+    clothGeometry1.translate( clothPos.x - clothWidth * 0.5, clothPos.y + clothHeight * 0.5, clothPos.z );
+    //clothGeometry1.lookAt(-10,0,0);
 
     const clothMaterial1 = new THREE.MeshLambertMaterial( { color: 'white', side: THREE.DoubleSide } );
     cloth1 = new THREE.Mesh( clothGeometry1, clothMaterial1 );
@@ -767,9 +768,9 @@ function createCloth(){
     // Cloth physic object
     const softBodyHelpers = new Ammo.btSoftBodyHelpers();
     const clothCorner00 = new Ammo.btVector3( clothPos.x, clothPos.y + clothHeight, clothPos.z );
-    const clothCorner01 = new Ammo.btVector3( clothPos.x - clothWidth, clothPos.y + clothHeight, clothPos.z ); //clothPos.z - clothWidth 
+    const clothCorner01 = new Ammo.btVector3( clothPos.x - clothWidth, clothPos.y + clothHeight, clothPos.z ); 
     const clothCorner10 = new Ammo.btVector3( clothPos.x, clothPos.y, clothPos.z );
-    const clothCorner11 = new Ammo.btVector3( clothPos.x - clothWidth, clothPos.y, clothPos.z );//clothPos.z - clothWidth 
+    const clothCorner11 = new Ammo.btVector3( clothPos.x - clothWidth, clothPos.y, clothPos.z );
     const clothSoftBody = softBodyHelpers.CreatePatch( physicsWorld.getWorldInfo(), clothCorner00, clothCorner01, clothCorner10, clothCorner11, clothNumSegmentsZ + 1, clothNumSegmentsY + 1, 0, true );
     const sbConfig = clothSoftBody.get_m_cfg();
     sbConfig.set_viterations(10);
@@ -1125,9 +1126,12 @@ function updatePhysics( deltaTime ){
 
         const node = nodes.at( i );
         const nodePos = node.get_m_x();
-        clothPositions[ indexFloat ++ ] = nodePos.x();
-        clothPositions[ indexFloat ++ ] = nodePos.y();
-        clothPositions[ indexFloat ++ ] = nodePos.z();
+        clothPositions[ indexFloat ] = nodePos.x();
+        indexFloat ++;
+        clothPositions[ indexFloat ] = nodePos.y();
+        indexFloat ++;
+        clothPositions[ indexFloat ] = nodePos.z();
+        indexFloat ++;
 
     }
 
@@ -1145,9 +1149,12 @@ function updatePhysics( deltaTime ){
 
         const node = nodes2.at( i );
         const nodePos = node.get_m_x();
-        clothPositions2[ indexFloat2 ++ ] = nodePos.x();
-        clothPositions2[ indexFloat2 ++ ] = nodePos.y();
-        clothPositions2[ indexFloat2 ++ ] = nodePos.z();
+        clothPositions2[ indexFloat2 ] = nodePos.x();
+        indexFloat2 ++;
+        clothPositions2[ indexFloat2 ] = nodePos.y();
+        indexFloat2 ++;
+        clothPositions2[ indexFloat2 ] = nodePos.z();
+        indexFloat2 ++;
 
     }
 
@@ -1166,9 +1173,12 @@ function updatePhysics( deltaTime ){
 
         const node = nodes3.at( i );
         const nodePos = node.get_m_x();
-        clothPositions3[ indexFloat3 ++ ] = nodePos.x();
-        clothPositions3[ indexFloat3 ++ ] = nodePos.y();
-        clothPositions3[ indexFloat3 ++ ] = nodePos.z();
+        clothPositions3[ indexFloat3 ] = nodePos.x();
+        indexFloat3 ++;
+        clothPositions3[ indexFloat3 ] = nodePos.y();
+        indexFloat3 ++;
+        clothPositions3[ indexFloat3 ] = nodePos.z();
+        indexFloat3 ++;
 
     }
 
@@ -1186,9 +1196,12 @@ function updatePhysics( deltaTime ){
 
         const node = nodes4.at( i );
         const nodePos = node.get_m_x();
-        clothPositions4[ indexFloat4 ++ ] = nodePos.x();
-        clothPositions4[ indexFloat4 ++ ] = nodePos.y();
-        clothPositions4[ indexFloat4 ++ ] = nodePos.z();
+        clothPositions4[ indexFloat4 ] = nodePos.x();
+        indexFloat4 ++;
+        clothPositions4[ indexFloat4 ] = nodePos.y();
+        indexFloat4 ++;
+        clothPositions4[ indexFloat4 ] = nodePos.z();
+        indexFloat4 ++;
 
     }
 

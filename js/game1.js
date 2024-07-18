@@ -46,8 +46,6 @@ function setupPhysicsWorld(){
 	const softBodySolver = new Ammo.btDefaultSoftBodySolver();
     physicsWorld = new Ammo.btSoftRigidDynamicsWorld( dispatcher, overlappingPairCache, solver, collisionConfiguration, softBodySolver );
     physicsWorld.setGravity( new Ammo.btVector3( 0, -9.8, 0 ) );
-    physicsWorld.getWorldInfo().set_m_gravity( new Ammo.btVector3( 0, -9.8, 0 ) );
-
 
 }
 
@@ -239,29 +237,8 @@ function formatTimeLeft(time) {
 
 function setupEventHandlers(){
 
-    window.addEventListener( 'keydown', handleKeyDown, false);
-    window.addEventListener( 'keyup', handleKeyUp, false);
     window.addEventListener( 'mousedown', onMouseDown, false );
     window.addEventListener( 'mousemove', onMouseMove, false);
-
-}
-
-function handleKeyDown(event){
-
-    let keyCode = event.keyCode;
-
-    switch(keyCode){
-        
-            
-    }
-}
-
-function handleKeyUp(event){
-    let keyCode = event.keyCode;
-
-    switch(keyCode){
-        
-    }
 
 }
 
@@ -287,7 +264,7 @@ function onMouseDown ( event ) {
         let mass = 10;
 
         //threeJS Section
-        let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: createRandomColor()}));
+        let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), createMaterial());
 
         ball.position.set(pos.x, pos.y, pos.z);
 
@@ -396,7 +373,6 @@ function createPlane(texture){ //creates the plane
 
 }
 
-
 function createParalellepiped( sx, sy, sz, mass, pos, quat, material, index ) {
 
     const threeObject = new THREE.Mesh( new THREE.BoxGeometry( sx, sy, sz, 1, 1, 1 ), material );
@@ -487,16 +463,16 @@ function createWall(){
         }
         
 
-        const nRow = oddRow ? numBricksLength + 1 : numBricksLength;
+        const nCols = oddRow ? numBricksLength + 1 : numBricksLength;
 
-        for ( let i = 0; i < nRow; i ++ ) {
+        for ( let i = 0; i < nCols; i ++ ) {
 
             let brickLengthCurrent = brickLength;
             let brickMassCurrent = brickMass;
             let brickHeightCurrent = brickHeight;
             
 
-            if ( oddRow && ( i == 0 || i == nRow - 1 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 1 ) ) {
 
                 brickLengthCurrent *= 0.5;
                 brickMassCurrent *= 0.5;
@@ -511,7 +487,7 @@ function createWall(){
             brick.castShadow = true;
             brick.receiveShadow = true;
 
-            if ( oddRow && ( i == 0 || i == nRow - 2 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 2 ) ) {
 
                 pos.z += 0.75 * brickLength; 
 
@@ -543,16 +519,16 @@ function createWall(){
 
         }
 
-        const nRow = oddRow ? numBricksLength + 1 : numBricksLength;
+        const nCols = oddRow ? numBricksLength + 1 : numBricksLength;
 
-        for ( let i = 0; i < nRow; i ++ ) {
+        for ( let i = 0; i < nCols; i ++ ) {
 
             let brickLengthCurrent = brickLength;
             let brickMassCurrent = brickMass;
             let brickHeightCurrent = brickHeight;
             
 
-            if ( oddRow && ( i == 0 || i == nRow - 1 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 1 ) ) {
 
                 brickLengthCurrent *= 0.5;
                 brickMassCurrent *= 0.5;
@@ -567,7 +543,7 @@ function createWall(){
             brick.castShadow = true;
             brick.receiveShadow = true;
 
-            if ( oddRow && ( i == 0 || i == nRow - 2 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 2 ) ) {
 
                 pos.z += 0.75 * brickLength;
 
@@ -601,16 +577,16 @@ function createWall(){
 
         }
 
-        const nRow = oddRow ? numBricksLength + 1 : numBricksLength;
+        const nCols = oddRow ? numBricksLength + 1 : numBricksLength;
 
-        for ( let i = 0; i < nRow; i ++ ) {
+        for ( let i = 0; i < nCols; i ++ ) {
 
             let brickLengthCurrent = brickLength;
             let brickMassCurrent = brickMass;
             let brickHeightCurrent = brickHeight;
             
 
-            if ( oddRow && ( i == 0 || i == nRow - 1 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 1 ) ) {
 
                 brickLengthCurrent *= 0.5;
                 brickMassCurrent *= 0.5;
@@ -625,7 +601,7 @@ function createWall(){
             brick.castShadow = true;
             brick.receiveShadow = true;
 
-            if ( oddRow && ( i == 0 || i == nRow - 2 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 2 ) ) {
 
                 pos.x += 0.75 * brickLength;
 
@@ -657,16 +633,16 @@ function createWall(){
 
         }
 
-        const nRow = oddRow ? numBricksLength + 1 : numBricksLength;
+        const nCols = oddRow ? numBricksLength + 1 : numBricksLength;
 
-        for ( let i = 0; i < nRow; i ++ ) {
+        for ( let i = 0; i < nCols; i ++ ) {
 
             let brickLengthCurrent = brickLength;
             let brickMassCurrent = brickMass;
             let brickHeightCurrent = brickHeight;
             
 
-            if ( oddRow && ( i == 0 || i == nRow - 1 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 1 ) ) {
 
                 brickLengthCurrent *= 0.5;
                 brickMassCurrent *= 0.5;
@@ -681,7 +657,7 @@ function createWall(){
             brick.castShadow = true;
             brick.receiveShadow = true;
 
-            if ( oddRow && ( i == 0 || i == nRow - 2 ) ) {
+            if ( oddRow && ( i == 0 || i == nCols - 2 ) ) {
 
                 pos.x += 0.75 * brickLength;
 
