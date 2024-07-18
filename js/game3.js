@@ -362,7 +362,7 @@ function checkCollision(){
                     const index = name.split('_')[1];
                     for (var j in scene.children){
                         const elem = scene.children[j];
-                        if (elem.name && elem.name.split('_')[1] == index)
+                        if (elem.name && elem.name.split('_')[0] == 'Line' && elem.name.split('_')[1] == index)
                             hit_lines.push(elem);
                     }
                     if (sound.isPlaying) {
@@ -604,7 +604,7 @@ function createCilinder(){
 
     Character.position.set(pos.x, pos.y, pos.z);
     Character.quaternion.set(quat.x, quat.y, quat.z);
-    let colShape = new Ammo.btCylinderShape(radiusTop, radiusBottom, height);//new Ammo.btVector3(scale.x * 0.5, scale.y * 0.5, scale.z * 0.5)
+    let colShape = new Ammo.btCylinderShape(radiusTop, radiusBottom, height);
     colShape.setMargin(0.05);
 
     const playerBody = createRigidBody(Character, colShape, mass, pos, quat);
@@ -650,7 +650,6 @@ function createBaloon() {
 function createParticleSystemFromGeometry(geom, x, y, z, index) {
     var psMat = new THREE.PointsMaterial({ size: 0.3, color: createRandomColor(), map: new THREE.TextureLoader().load("../immages/baloon.jpg") });
     psMat.transparent = false;
-    psMat.shadowSide = THREE.DoubleSide;
     var ps = new THREE.Points(geom, psMat);
     ps.position.set(x, y, z);
     ps.sortParticles = true;
