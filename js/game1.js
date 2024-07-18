@@ -4,13 +4,10 @@ let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let shot = true;
-let points = 0, start_positions = [];
-let physicsWorld, scene, camera, renderer, rigidBodies = [], tmpTrans = null, world;
-let tmpPos = new THREE.Vector3(), tmpQuat = new THREE.Quaternion();
-let ammoTmpPos = null, ammoTmpQuat = null;
+let points = 0, start_positions = [], tmpPos = new THREE.Vector3();
+let physicsWorld, scene, camera, renderer, rigidBodies = [], tmpTrans = null;
 let mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-let textureLoader;
-let avgVertexNormals_tot = [], positions = [];
+let textureLoader, sound, sound_win, sound_loose;
 
 const STATE = { DISABLE_DEACTIVATION : 4 }
 
@@ -23,15 +20,12 @@ Ammo().then(start)
 
 function start (){
     
-    run_game1 = true;
     tmpTrans = new Ammo.btTransform();
-    ammoTmpPos = new Ammo.btVector3();
-    ammoTmpQuat = new Ammo.btQuaternion();
     setupEventHandlers();
     
     document.getElementById('score1').style.display = 'grid';
     camera_par = [100, window.innerWidth / window.innerHeight, 0.2, 5000];  
-    setupGraphics(0, 30, 70, camera_par, follow = '');
+    setupGraphics(0, 30, 70, camera_par);
     setupPhysicsWorld();
     createPlane('../immages/kids_floor.jpg');
     createWall();
@@ -57,7 +51,7 @@ function setupPhysicsWorld(){
 
 }
 
-function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
+function setupGraphics(camerax, cameray, cameraz, camera_par){
 
     //create clock for timing
     clock = new THREE.Clock();
@@ -78,6 +72,38 @@ function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
     camera = new THREE.PerspectiveCamera(camera_par[0], camera_par[1], camera_par[2], camera_par[3]);
     camera.position.set(camerax, cameray, cameraz);
     scene.add(camera);
+
+    const listener = new THREE.AudioListener();
+    camera.add(listener);
+
+    // Create a global audio source
+    sound = new THREE.Audio(listener);
+
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load('../sounds/throw_ball.mp3', function(buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(false);
+        sound.setVolume(0.5);
+    });
+
+    sound_win = new THREE.Audio(listener);
+
+    const audioLoader_win = new THREE.AudioLoader();
+    audioLoader_win.load('../sounds/win.mp3', function(buffer) {
+        sound_win.setBuffer(buffer);
+        sound_win.setLoop(false);
+        sound_win.setVolume(0.5);
+    });
+
+    sound_loose = new THREE.Audio(listener);
+
+    const audioLoader_loose = new THREE.AudioLoader();
+    audioLoader_loose.load('../sounds/lost.mp3', function(buffer) {
+        sound_loose.setBuffer(buffer);
+        sound_loose.setLoop(false);
+        sound_loose.setVolume(0.5);
+    });
+
 
     //Add hemisphere light
     let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
@@ -160,7 +186,7 @@ function renderFrame(){
    
     if (points >= 130){
         shot = false;
-        //document.getElementById('loading').style.display = 'grid';
+        sound_win.play();
         setTimeout( function() {
             document.getElementById('win1').style.display = 'grid';
             }, 2000);
@@ -184,7 +210,8 @@ function startTimer() {
         
         document.getElementById("Countdown1").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
         
-        if (timeLeft === 0) {
+        if (timeLeft === 0 && points < 130) {
+            sound_loose.play();
             document.getElementById("game_over1").style.display = 'grid';
             timePassed = 0;
             timeLeft = TIME_LIMIT;
@@ -295,6 +322,10 @@ function onMouseDown ( event ) {
 
         ball.userData.physicsBody = body;
         rigidBodies.push(ball);
+        if (sound.isPlaying) {
+            sound.stop();
+        }
+        sound.play();
     } 
     
 
@@ -306,7 +337,6 @@ function onMouseMove(event){
 
     mouseCoords.x = (event.clientX / width * 2 - 1);
     mouseCoords.y = -(event.clientY / height) * 2 + 1;
-    //console.log(mouseCoords);
 }
 
 
@@ -318,7 +348,7 @@ function createPlane(texture){ //creates the plane
     let mass = 0;
 
     // //threeJS Section
-    const material = new THREE.MeshPhongMaterial({color: 'grey'} );//{ color: 'blue'}
+    const material = new THREE.MeshPhongMaterial({color: 'grey'} );
     let blockPlane;
     blockPlane = new THREE.Mesh(new THREE.BoxBufferGeometry(2, 2, 2), material);
     
@@ -448,7 +478,7 @@ function createWall(){
 
         const oddRow = ( j % 2 ) == 1;
 
-        pos.z = z0; //pos.x = z0;
+        pos.z = z0; 
 
         if ( oddRow ) {
 

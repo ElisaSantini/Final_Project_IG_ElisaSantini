@@ -3,30 +3,19 @@ const TIME_LIMIT = 60;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
-let NUM_ENEMY = 20, TOWELS = 4, dirty = [];
-let left_enemy = NUM_ENEMY, left_towels = TOWELS;
-let physicsWorld, scene, camera, renderer, rigidBodies = [], tmpTrans = null, world, cloth1, cloth2, cloth3, cloth4;
-let ballObject = null, moveDirection = { left: 0, right: 0, forward: 0, back: 0 , up : 0}, rotate = {left: 0, right: 0}, roll = {up : 0, down : 0};
-let kObject = null, kMoveDirection = { left: 0, right: 0, forward: 0, back: 0 }, tmpPos = new THREE.Vector3(), tmpQuat = new THREE.Quaternion();
-let ammoTmpPos = null, ammoTmpQuat = null;
+let NUM_ENEMY = 20;
+let left_enemy = NUM_ENEMY;
+let physicsWorld, scene, camera, renderer, rigidBodies = [], tmpTrans = null;
+let moveDirection = { left: 0, right: 0, forward: 0, back: 0 , up : 0}, rotate = {left: 0, right: 0}, roll = {up : 0, down : 0};
 let mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-let textureLoader, ObjLoader; 
-let transformAux1, avgVertexNormals_tot = [], positions = [];
-let clothMesh1, clothMesh2, HitObjects = [], velocity, direction = new THREE.Vector3(), prevTime = performance.now();
-const Nx = 15;
-const Ny = 15;
-const mass = 1;
-const clothSize = 1;
-const dist = 1; 
-let clothGeometry1, clothGeometry2, clothGeometry3, clothGeometry4, particles;
+let textureLoader, sound, sound_win, sound_loose, audioLoader, listener; 
+let avgVertexNormals_tot = [];
+let velocity;
 let followCam = new THREE.Object3D();;
-let running = false;
-let run_game1 = false, run_game2 = false, run_game3 = false;
 let Character = null;
-var stopAnimate = false, baloons = [], hit_baloons = [];
+var stopAnimate = false, hit_baloons = [], hit_lines = [];
 
 const STATE = { DISABLE_DEACTIVATION : 4 }
-
 const FLAGS = { CF_KINEMATIC_OBJECT: 2 }
 
 //Ammojs Initialization
@@ -36,19 +25,19 @@ Ammo().then(start)
 
 function start (){
     tmpTrans = new Ammo.btTransform();
-    ammoTmpPos = new Ammo.btVector3();
-    ammoTmpQuat = new Ammo.btQuaternion();
     setupEventHandlers();
 
     document.getElementById('score3').style.display = 'grid';
     camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
-    setupGraphics(0, 5, 10, camera_par, follow = 'car');
+    setupGraphics(0, 5, 10, camera_par);
     setupPhysicsWorld();
     createPlane('floor.avif');
     createBaloon();
     createCilinder();
     renderFrame();
+    document.getElementById('score3').style.display = 'grid';
     startTimer();
+    
 
     
 
@@ -66,7 +55,6 @@ function setupPhysicsWorld(){
     physicsWorld.setGravity( new Ammo.btVector3( 0, -9.8, 0 ) );
     physicsWorld.getWorldInfo().set_m_gravity( new Ammo.btVector3( 0, -9.8, 0 ) );
 
-    transformAux1 = new Ammo.btTransform();
 
 }
 
@@ -92,16 +80,41 @@ function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
     camera.position.set(camerax, cameray, cameraz);
     scene.add(camera);
 
-    if (follow == 'ball'){
-        followCam.position.copy(camera.position);
-        scene.add(followCam);
-        followCam.parent = ballObject;
-    } else if (follow == 'car'){
-        followCam.position.copy(camera.position);
-        scene.add(followCam);
-        followCam.parent = Character;
-    }
+    followCam.position.copy(camera.position);
+    scene.add(followCam);
+    followCam.parent = Character;
     
+    listener = new THREE.AudioListener();
+    camera.add(listener);
+
+    // Create a global audio source
+    sound = new THREE.Audio(listener);
+
+    audioLoader = new THREE.AudioLoader();
+    audioLoader.load('../sounds/balloon_pop.mp3', function(buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(false);
+        sound.setVolume(0.5);
+        //sound.stop();
+    });
+
+    sound_win = new THREE.Audio(listener);
+
+    const audioLoader_win = new THREE.AudioLoader();
+    audioLoader_win.load('../sounds/win.mp3', function(buffer) {
+        sound_win.setBuffer(buffer);
+        sound_win.setLoop(false);
+        sound_win.setVolume(0.5);
+    });
+
+    sound_loose = new THREE.Audio(listener);
+
+    const audioLoader_loose = new THREE.AudioLoader();
+    audioLoader_loose.load('../sounds/lost.mp3', function(buffer) {
+        sound_loose.setBuffer(buffer);
+        sound_loose.setLoop(false);
+        sound_loose.setVolume(0.5);
+    });
 
     //Add hemisphere light
     let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
@@ -168,18 +181,21 @@ function renderFrame(){
             stopAnimate = true;
             }, 100);
         explode(hit_baloons[0].geometry);
+        
     
     } else {
-        let baloon = hit_baloons.pop()
+        let baloon = hit_baloons.pop();
+        let line = hit_lines.pop();
+        scene.remove(line);
         scene.remove(baloon);
         stopAnimate = false;
         
     }
 
     if (left_enemy === 0){
+        sound_win.play();
         setTimeout( function() {
             document.getElementById('win3').style.display = 'grid';
-            run_game3 = false;
             }, 1000);
         
     }
@@ -201,6 +217,7 @@ function startTimer() {
         
     
         if (timeLeft === 0 && left_enemy > 0) {
+            sound_loose.play();
             document.getElementById("game_over3").style.display = 'grid';
             timePassed = 0;
             timeLeft = TIME_LIMIT;
@@ -256,23 +273,22 @@ function handleKeyDown(event){
             break;
             
         case 74: //J: LEFT
-            rotate.left = 1;//0.1
+            rotate.left = 1;
             break;
             
         case 76: //L: RIGHT
-            rotate.right = 1;//0.1
+            rotate.right = 1;
             break;
 
         case 75: //K: LEFT
-            roll.down = 1;//0.1
+            roll.down = 1;
             break;
             
         case 73: //I: RIGHT
-            roll.up = 1;//0.1
+            roll.up = 1;
             break;
 
         case 32: //: SPACE
-           
             checkCollision();
             break;
         
@@ -336,7 +352,6 @@ function checkCollision(){
 
     raycaster.set(Character.position, new THREE.Vector3(-dz.x, dz.y, -dz.z), 10, 50);
     const intersects = raycaster.intersectObjects(scene.children);
-
     for (let i = 0; i < intersects.length; i++) {
         
         if (intersects[i].object.type === "Points") {
@@ -344,6 +359,17 @@ function checkCollision(){
                 intersects[i].object.isHit = true;
                 if (intersects[i].object.isHit){
                     hit_baloons.push(intersects[i].object);
+                    const name = intersects[i].object.name;
+                    const index = name.split('_')[1];
+                    for (var j in scene.children){
+                        const elem = scene.children[j];
+                        if (elem.name && elem.name.split('_')[1] == index)
+                            hit_lines.push(elem);
+                    }
+                    if (sound.isPlaying) {
+                        sound.stop();
+                    }
+                    sound.play();
                 }
                 left_enemy--;
                 document.getElementById('points3').innerHTML = 'Baloons left: '+ left_enemy;
@@ -398,11 +424,7 @@ function createPlane(texture){ //creates the plane
             texture.colorSpace = THREE.SRGBColorSpace;
             texture.wrapS = THREE.RepeatWrapping;
             texture.wrapT = THREE.RepeatWrapping;
-            if (run_game3){
-                texture.repeat.set( 1, 2);
-            } else if (run_game2){
-                texture.repeat.set( 5, 5);
-            }
+            texture.repeat.set( 1, 2);
             blockPlane.material.map = texture;
             blockPlane.material.needsUpdate = true;
     
@@ -588,13 +610,13 @@ function createCilinder(){
 
     const playerBody = createRigidBody(Character, colShape, mass, pos, quat);
     playerBody.setAngularFactor(0, 0, 0);
+
 }
 
 function createBaloon() {
     totalEnemies = NUM_ENEMY;
     for (let i = 0; i < totalEnemies; i++) {
         let radius = getRandomInt(1, 6);
-        let y_p;
         
         let pos = { x: getRandomInt(-50, 50), y: 0, z: getRandomInt(-50, 50) };
 
@@ -603,8 +625,22 @@ function createBaloon() {
         sphere.vertices.forEach(function (v) {
                 v.velocity = Math.random();
             });
-        sphere.name = 'id_' + i;
-        createParticleSystemFromGeometry(sphere, pos.x, pos.y, pos.z);
+        sphere.name = 'Sphere_' + i;
+
+        let geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3(pos.x, pos.y, pos.z));
+        for(let j = 0; j < 20; j ++){
+            if (j % 2 == 0)
+                geometry.vertices.push(new THREE.Vector3(pos.x - 0.5, pos.y - j, pos.z));
+            else    
+                geometry.vertices.push(new THREE.Vector3(pos.x + 0.5, pos.y - j, pos.z));
+        }
+        
+        material = new THREE.LineBasicMaterial( { color: createRandomColor(), linewidth: 3 , map: new THREE.TextureLoader().load("../immages/baloons_line.jpg")} );
+        line = new THREE.Line(geometry, material);
+        line.name = 'Line_' + i;
+        scene.add(line);
+        createParticleSystemFromGeometry(sphere, pos.x, pos.y, pos.z, i);
         
 
     }
@@ -613,13 +649,14 @@ function createBaloon() {
 
 }
 
-function createParticleSystemFromGeometry(geom, x, y, z) {
+function createParticleSystemFromGeometry(geom, x, y, z, index) {
     var psMat = new THREE.PointsMaterial({ size: 0.3, color: createRandomColor(), map: new THREE.TextureLoader().load("../immages/baloon.jpg") }); //https://threejs.org/examples/textures/758px-Canestra_di_frutta_(Caravaggio).jpg
     psMat.transparent = false;
     psMat.shadowSide = THREE.DoubleSide;
     var ps = new THREE.Points(geom, psMat);
     ps.position.set(x, y, z);
     ps.sortParticles = true;
+    ps.name = 'Baloon_' + index;
     scene.add(ps);
 
     let avgVertexNormals = [];

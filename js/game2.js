@@ -5,12 +5,10 @@ let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let TOWELS = 4, dirty = [];
 let left_towels = TOWELS;
-let physicsWorld, scene, camera, renderer, rigidBodies = [], tmpTrans = null, world, cloth1, cloth2, cloth3, cloth4;
-let ballObject = null, moveDirection = { left: 0, right: 0, forward: 0, back: 0 , up : 0}, rotate = {left: 0, right: 0}, roll = {up : 0, down : 0};
-let tmpPos = new THREE.Vector3(), tmpQuat = new THREE.Quaternion();
-let ammoTmpPos = null, ammoTmpQuat = null;
+let physicsWorld, scene, camera, renderer, rigidBodies = [], tmpTrans = null, cloth1, cloth2, cloth3, cloth4;
+let ballObject = null, moveDirection = { left: 0, right: 0, forward: 0, back: 0 , up : 0};
 let mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster();
-let textureLoader;
+let textureLoader, sound1, sound2, sound_win, sound_loose;
 const Nx = 15;
 const Ny = 15;
 const mass = 1;
@@ -31,8 +29,6 @@ Ammo().then(start)
 function start (){
     
     tmpTrans = new Ammo.btTransform();
-    ammoTmpPos = new Ammo.btVector3();
-    ammoTmpQuat = new Ammo.btQuaternion();
     setupEventHandlers();
     
     document.getElementById('score2').style.display = 'grid';
@@ -88,6 +84,47 @@ function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
     followCam.position.copy(camera.position);
     scene.add(followCam);
     followCam.parent = ballObject;
+
+    const listener = new THREE.AudioListener();
+    camera.add(listener);
+
+    // Create a global audio source
+    sound1 = new THREE.Audio(listener);
+
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load('../sounds/grass.mp3', function(buffer) {
+        sound1.setBuffer(buffer);
+        sound1.setLoop(false);
+        sound1.setVolume(0.5);
+    });
+
+    sound2 = new THREE.Audio(listener);
+
+    const audioLoader2 = new THREE.AudioLoader();
+    audioLoader2.load('../sounds/jump.mp3', function(buffer) {
+        sound2.setBuffer(buffer);
+        sound2.setLoop(false);
+        sound2.setVolume(0.5);
+    });
+
+    sound_win = new THREE.Audio(listener);
+
+    const audioLoader_win = new THREE.AudioLoader();
+    audioLoader_win.load('../sounds/win.mp3', function(buffer) {
+        sound_win.setBuffer(buffer);
+        sound_win.setLoop(false);
+        sound_win.setVolume(0.5);
+    });
+
+    sound_loose = new THREE.Audio(listener);
+
+    const audioLoader_loose = new THREE.AudioLoader();
+    audioLoader_loose.load('../sounds/lost.mp3', function(buffer) {
+        sound_loose.setBuffer(buffer);
+        sound_loose.setLoop(false);
+        sound_loose.setVolume(0.5);
+    });
+
     
 
     //Add hemisphere light
@@ -150,6 +187,7 @@ function renderFrame(){
     camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()), 0.085);
     camera.position.set(ballObject.position.x, ballObject.position.y + 10, ballObject.position.z + 10);
     if(left_towels == 0 ){
+        sound_win.play();
         setTimeout( function() {
             document.getElementById('win2').style.display = 'grid';
             }, 2000);
@@ -173,7 +211,8 @@ function startTimer() {
         
         
     
-        if (timeLeft === 0 && left_towels > 0) {           
+        if (timeLeft === 0 && left_towels > 0) { 
+            sound_loose.play();          
             document.getElementById("game_over2").style.display = 'grid';
             timePassed = 0;
             timeLeft = TIME_LIMIT;
@@ -215,31 +254,43 @@ function handleKeyDown(event){
 
         case 87: //W: FORWARD
             moveDirection.forward = 1
+            if (sound1.isPlaying) {
+                sound1.stop();
+            }
+            sound1.play();
             break;
             
         case 83: //S: BACK
             moveDirection.back = 1
+            if (sound1.isPlaying) {
+                sound1.stop();
+            }
+            sound1.play();
             break;
             
         case 65: //A: LEFT
             moveDirection.left = 1
+            if (sound1.isPlaying) {
+                sound1.stop();
+            }
+            sound1.play();
             break;
             
         case 68: //D: RIGHT
             moveDirection.right = 1
-            break;
-            
-        case 74: //J: LEFT
-            rotate.left = 1;//0.1
-            break;
-            
-        case 76: //L: RIGHT
-            rotate.right = 1;//0.1
+            if (sound1.isPlaying) {
+                sound1.stop();
+            }
+            sound1.play();
             break;
 
         case 32: //: SPACE
             
             moveDirection.up = 1;
+            if (sound2.isPlaying) {
+                sound2.stop();
+            }
+            sound2.play();
             checkCollision();
             
             break;
@@ -275,15 +326,6 @@ function handleKeyUp(event){
         // case 75: //↓: BACK
         //     kMoveDirection.back = 0
         //     break;
-            
-        case 74: //←: LEFT
-            rotate.left = 0
-            break;
-            
-        case 76: //→: RIGHT
-            rotate.right = 0
-            break;
-
 
         case 32: //: SPACE
            
@@ -1051,9 +1093,6 @@ function moveBall(){
     let moveX =  moveDirection.right - moveDirection.left;
     let moveZ =  moveDirection.back - moveDirection.forward;
     let moveY =  moveDirection.up; 
-
-    let Rotate = rotate.left - rotate.right;
-    let Roll = roll.up - roll.down;
     
 
     let resultantImpulse = new Ammo.btVector3( moveX, moveY, moveZ )
