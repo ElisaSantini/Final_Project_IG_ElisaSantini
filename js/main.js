@@ -41,544 +41,544 @@ const STATE = { DISABLE_DEACTIVATION : 4 }
 const FLAGS = { CF_KINEMATIC_OBJECT: 2 }
 
 //Ammojs Initialization
-Ammo().then(start)
+// Ammo().then(start)
 
 
 
-function start (){
-    // time = performance.now();
-    // prevTime = performance.now();
-    //run_game1 = true;
-    tmpTrans = new Ammo.btTransform();
-    ammoTmpPos = new Ammo.btVector3();
-    ammoTmpQuat = new Ammo.btQuaternion();
-    //console.log(run_game1, run_game2, run_game3);
-    // setupPhysicsWorld();
-    setupEventHandlers();
-    // setupGraphics();
-    // createPlane();
-    //console.log(run_game2);
-    if(run_game1){
-        document.getElementById('score1').style.display = 'grid';
-        document.getElementById('score2').style.display = 'none';
-        document.getElementById('score3').style.display = 'none';
-        camera_par = [100, window.innerWidth / window.innerHeight, 0.2, 5000];  
-        setupGraphics(0, 30, 70, camera_par, follow = '');
-        setupPhysicsWorld();
-        createPlane('./kids_floor.jpg');
-        createWall();
-        renderFrame();
-        //startTimer();
-        //console.log('start 1');
+// function start (){
+//     // time = performance.now();
+//     // prevTime = performance.now();
+//     //run_game1 = true;
+//     tmpTrans = new Ammo.btTransform();
+//     ammoTmpPos = new Ammo.btVector3();
+//     ammoTmpQuat = new Ammo.btQuaternion();
+//     //console.log(run_game1, run_game2, run_game3);
+//     // setupPhysicsWorld();
+//     setupEventHandlers();
+//     // setupGraphics();
+//     // createPlane();
+//     //console.log(run_game2);
+//     if(run_game1){
+//         document.getElementById('score1').style.display = 'grid';
+//         document.getElementById('score2').style.display = 'none';
+//         document.getElementById('score3').style.display = 'none';
+//         camera_par = [100, window.innerWidth / window.innerHeight, 0.2, 5000];  
+//         setupGraphics(0, 30, 70, camera_par, follow = '');
+//         setupPhysicsWorld();
+//         createPlane('./kids_floor.jpg');
+//         createWall();
+//         renderFrame();
+//         //startTimer();
+//         //console.log('start 1');
         
         
-    } else if (run_game2){
+//     } else if (run_game2){
 
-        setupPhysicsWorld();
-        camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
-        setupGraphics(0, 5, 10, camera_par, follow = ''); //ball
-        createPlane('./grass_prova.jpg');
-        createBall('./ball3.jpg');
-        createCloth();
-        //checkCollision();
-        // createCloth(30, 5, 30);
-        // createCloth(-30, 5, -10);
-        // createCloth(30, 5, -30);
-        //createCloth(-10, 5, 0);
-        renderFrame();
-        //startTimer();
+//         setupPhysicsWorld();
+//         camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
+//         setupGraphics(0, 5, 10, camera_par, follow = ''); //ball
+//         createPlane('./grass_prova.jpg');
+//         createBall('./ball3.jpg');
+//         createCloth();
+//         //checkCollision();
+//         // createCloth(30, 5, 30);
+//         // createCloth(-30, 5, -10);
+//         // createCloth(30, 5, -30);
+//         //createCloth(-10, 5, 0);
+//         renderFrame();
+//         //startTimer();
 
-    } else if (run_game3){
+//     } else if (run_game3){
 
-        camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
-        setupGraphics(0, 5, 10, camera_par, follow = 'car');
-        setupPhysicsWorld();
-        createPlane('floor.avif');
-        createBaloon();
-        //createBall();
-        createCar();
-        renderFrame();
-        //startTimer();
+//         camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
+//         setupGraphics(0, 5, 10, camera_par, follow = 'car');
+//         setupPhysicsWorld();
+//         createPlane('floor.avif');
+//         createBaloon();
+//         //createBall();
+//         createCar();
+//         renderFrame();
+//         //startTimer();
 
-    }
+//     }
     
-    // createBall();
-    // createKinematicBox();
-    // createCloth();
-    
-
-}
-
-function setupPhysicsWorld(){
-
-   // let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
-    let collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
-        dispatcher              = new Ammo.btCollisionDispatcher(collisionConfiguration),
-        overlappingPairCache    = new Ammo.btDbvtBroadphase(),
-        solver                  = new Ammo.btSequentialImpulseConstraintSolver();
-
-    // physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-    // physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
-    
-	// 			const dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
-	// 			const broadphase = new Ammo.btDbvtBroadphase();
-	// 			const solver = new Ammo.btSequentialImpulseConstraintSolver();
-	const softBodySolver = new Ammo.btDefaultSoftBodySolver();
-    physicsWorld = new Ammo.btSoftRigidDynamicsWorld( dispatcher, overlappingPairCache, solver, collisionConfiguration, softBodySolver );
-    physicsWorld.setGravity( new Ammo.btVector3( 0, -9.8, 0 ) );
-    physicsWorld.getWorldInfo().set_m_gravity( new Ammo.btVector3( 0, -9.8, 0 ) );
-
-    transformAux1 = new Ammo.btTransform();
-
-    world = new CANNON.World({
-        gravity: new CANNON.Vec3(0, -9.81, 0)
-    });
-
-}
-
-function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
-
-    //create clock for timing
-    clock = new THREE.Clock();
+//     // createBall();
+//     // createKinematicBox();
+//     // createCloth();
     
 
-    //create the scene
-    scene = new THREE.Scene();
-    const loader = new THREE.TextureLoader();
-    // if (GAME_STOP){
-    //     run_game1 = false;
-    //     run_game2 = false;
-    //     run_game3 = false;
-    //     //console.log('here');
-    // }
-    if(run_game1){
-        const texture = loader.load(
-        'toy_room.jpg',
-        () => {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-        texture.colorSpace = THREE.SRGBColorSpace;
-        scene.background = texture;
-        });
-    } else if (run_game2){
-        const texture = loader.load(
-            'sky.jpg',
-            () => {
-            texture.mapping = THREE.EquirectangularReflectionMapping;
-            texture.colorSpace = THREE.SRGBColorSpace;
-            scene.background = texture;
-            });
-
-    } else {
-        const texture = loader.load(
-            'party.jpg',
-            () => {
-            texture.mapping = THREE.EquirectangularReflectionMapping;
-            texture.colorSpace = THREE.SRGBColorSpace;
-            scene.background = texture;
-            });
-    }
-    
-
-    //scene.background = new THREE.Color( 0xbfd1e5 );
-
-    //create camera
-    // camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.2, 5000 );
-    // camera.position.set( 0, 30, 20 );
-    // camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-    camera = new THREE.PerspectiveCamera(camera_par[0], camera_par[1], camera_par[2], camera_par[3]);
-    camera.position.set(camerax, cameray, cameraz);
-    scene.add(camera);
-
-    // camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.2, 2000 );
-
-    // scene = new THREE.Scene();
-    // scene.background = new THREE.Color( 0xbfd1e5 );
-
-    //camera.position.set( - 12, 7, 4 );
-
-
-    if (follow == 'ball'){
-        followCam.position.copy(camera.position);
-        scene.add(followCam);
-        followCam.parent = ballObject;
-    } else if (follow == 'car'){
-        followCam.position.copy(camera.position);
-        scene.add(followCam);
-        followCam.parent = Character;
-    }
-    
-
-    //Add hemisphere light
-    let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
-    hemiLight.color.setHSL( 0.6, 0.6, 0.6 );
-    hemiLight.groundColor.setHSL( 0.1, 1, 0.4 );
-    hemiLight.position.set( 0, 50, 0 );
-    scene.add( hemiLight );
-
-    //Add directional light
-    let dirLight = new THREE.DirectionalLight( 0xffcc00 , 1);
-    dirLight.color.setHSL( 1,1,1 ); //0.1, 1, 0.95
-    if(run_game3){
-        dirLight.position.set( 0, 10, 0 ); //-1, 1.75, 1
-        dirLight.position.multiplyScalar( 100 );
-    } else {
-        dirLight.position.set( 1, 1, 1 ); //-1, 1.75, 1
-        dirLight.position.multiplyScalar( 100 );
-    }
-    
-    
-    scene.add( dirLight );
-
-    dirLight.castShadow = true;
-
-    dirLight.shadow.mapSize.width = 2048;
-    dirLight.shadow.mapSize.height = 2048;
-
-    let d = 50;
-
-    dirLight.shadow.camera.left = -d;
-    dirLight.shadow.camera.right = d;
-    dirLight.shadow.camera.top = d;
-    dirLight.shadow.camera.bottom = -d;
-
-    dirLight.shadow.camera.far = 13500;
-
-    textureLoader = new THREE.TextureLoader();
-
-    //Setup the renderer
-    renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setClearColor( 0xbfd1e5 );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
-
-    renderer.shadowMap.enabled = true;
-    //if (run_game1 || run_game2){
-        const controls = new THREE.OrbitControls( camera, renderer.domElement );
-        //controls.target.set( 0, 1, 0 );
-        controls.update();
-        controls.enableDampling = true;
-        console.log('initialized');
-    //} else {
-        // controls = new PointerLockControls( camera, document.body );
-        // velocity = new THREE.Vector3();
-        // document.addEventListener('click', () => {
-        //     controls.lock();
-        //     console.log('qui');
-        // });
-        // controls.addEventListener( 'lock', function () {
-        //     console.log('Pointer locked')
-        //     // instructions.style.display = 'none';
-        //     // blocker.style.display = 'none';
-
-        // } );
-
-        // controls.addEventListener( 'unlock', function () {
-        //     console.log('Pointer unlocked')
-        //     // blocker.style.display = 'block';
-        //     // instructions.style.display = '';
-
-        // } );
-
-        //scene.add( controls.getObject() );
-
-    //}
-
-
-}
-
-function renderFrame(){
-    
-    let deltaTime = clock.getDelta();
-    // let time = performance.now();
-    // let deltaTime = (time - prevTime) / 1000;
-    if (run_game2){
-        moveBall(); 
-        camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()), 0.085);
-        //camera.lookAt(ballObject.position.x, ballObject.position.y + .5, ballObject.position.z);
-        camera.position.set(ballObject.position.x, ballObject.position.y + 10, ballObject.position.z + 10);
-        //checkCollision();
-        if(left_towels == 0 ){
-            document.getElementById('game_over').style.display = 'grid';
-            run_game2 = false;
-        }
-    } else if (run_game3){
-        //console.log('game3');
-        //moveCar();
-        moveBall(); 
-        camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()), 0.085);
-        //camera.lookAt(ballObject.position.x, ballObject.position.y + .5, ballObject.position.z);
-        camera.position.set(Character.position.x, Character.position.y + 10, Character.position.z + 10);
-        // const time = performance.now();
-        // const delta = (time - prevTime) / 1000;        
-        // if (controls.isLocked == true){
-        //     // raycaster.ray.origin.copy( controls.getObject().position );
-        //     // //console.log(controls.getObject().position);
-        //     // //console.log(raycaster);
-        //     // //cacca
-        //     // raycaster.ray.origin.y -= 10;
-
-        //     // const intersections = raycaster.intersectObjects( scene.children, false );
-            
-
-        //     // const onObject = intersections.length > 0;
-        //     //console.log(onObject);
-
-        //     //const delta = ( time - prevTime ) / 1000;
-        //     //console.log(delta);
-        //     velocity.x -= velocity.x * 10.0 * deltaTime;
-        //     velocity.z -= velocity.z * 10.0 * deltaTime;
-
-        //     velocity.y -= 9.8 * 100.0 * deltaTime; // 100.0 = mass
-        //     //console.log(moveDirection.forward - moveDirection.backward);
-        //     direction.z = moveDirection.forward - moveDirection.back;
-        //     //console.log(direction.z);
-        //     direction.x = moveDirection.right - moveDirection.left;
-        //     direction.normalize(); // this ensures consistent movements in all directions
-
-        //     if ( moveDirection.forward || moveDirection.back ){
-        //         //console.log('avanti');
-        //         velocity.z -= direction.z * 400.0 * deltaTime;
-
-        //         //console.log(direction.z);
-        //     } 
-        //     if ( moveDirection.left || moveDirection.right ){
-        //         //console.log('di lato');
-        //         velocity.x -= direction.x * 400.0 * deltaTime;
-        //         //console.log(velocity.x);
-        //     } 
-
-        //     // if ( onObject === true ) {
-
-        //     //     velocity.y = Math.max( 0, velocity.y );
-        //     //     canJump = true;
-
-        //     // }
-
-        //     controls.moveRight( - velocity.x * deltaTime );
-        //     controls.moveForward( - velocity.z * deltaTime );
-
-        //     //controls.getObject().position.y += ( velocity.y * deltaTime ); // new behavior
-
-        //     // if ( controls.getObject().position.y < 10 ) {
-
-        //     //     velocity.y = 0;
-        //     //     controls.getObject().position.y = 10;
-
-        //     //     canJump = true;
-
-        //     // }
-        // }
-        
-        //prevtime = performance.now();
-				
-        //camera.rotation.set(Character.rotation.x, Character.rotation.y, Character.rotation.z);
-        if (hit_baloons.length != 0 && !stopAnimate) {
-            //console.log(deltaTime);
-            setTimeout( function() {
-                stopAnimate = true;
-              }, 100);
-            explode(hit_baloons[0].geometry);
-        
-        } else {
-           let baloon = hit_baloons.pop()
-           scene.remove(baloon);
-           stopAnimate = false;
-           
-        }
-
-        if (left_enemy === 0){
-            document.getElementById('game_over').style.display = 'grid';
-            run_game3 = false;
-        }
-        //prevTime = performance.now();
-        //explode();
-    }
-    
-    //moveKinematic();
-    updatePhysics( deltaTime );
-    //explode();
-
-    renderer.render( scene, camera );
-
-    requestAnimationFrame( renderFrame );
-
-}
-
-// function startTimer() {
-//     timerInterval = setInterval(() => {
-//         timePassed = timePassed += 1;
-//         timeLeft = TIME_LIMIT - timePassed;
-//         if(run_game1){
-//             document.getElementById("Countdown1").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
-//         } else if (run_game2){
-//             document.getElementById("Countdown2").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
-//         } else if (run_game3){
-//             document.getElementById("Countdown3").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
-//         }
-        
-//         // setCircleDasharray();
-//         // setRemainingPathColor(timeLeft);
-    
-//         if (timeLeft === 0) {
-//             //GAME_STOP = true;
-//             // run_game1 = false;
-//             // run_game2 = false;
-//             // run_game3 = false;
-//             document.getElementById("game_over").style.display = 'grid';
-//             timePassed = 0;
-//             timeLeft = TIME_LIMIT;
-            
-//             //start();
-//             // while(scene.children.length > 0){ 
-//             //     scene.remove(scene.children[0]); 
-//             // }
-            
-//         }
-//     }, 1000);
 // }
 
-// function formatTimeLeft(time) {
-//     // The largest round integer less than or equal to the result of time divided being by 60.
-//     const minutes = Math.floor(time / 60);
+// function setupPhysicsWorld(){
+
+//    // let collisionConfiguration  = new Ammo.btDefaultCollisionConfiguration(),
+//     let collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration();
+//         dispatcher              = new Ammo.btCollisionDispatcher(collisionConfiguration),
+//         overlappingPairCache    = new Ammo.btDbvtBroadphase(),
+//         solver                  = new Ammo.btSequentialImpulseConstraintSolver();
+
+//     // physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+//     // physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
     
-//     // Seconds are the remainder of the time divided by 60 (modulus operator)
-//     let seconds = time % 60;
+// 	// 			const dispatcher = new Ammo.btCollisionDispatcher( collisionConfiguration );
+// 	// 			const broadphase = new Ammo.btDbvtBroadphase();
+// 	// 			const solver = new Ammo.btSequentialImpulseConstraintSolver();
+// 	const softBodySolver = new Ammo.btDefaultSoftBodySolver();
+//     physicsWorld = new Ammo.btSoftRigidDynamicsWorld( dispatcher, overlappingPairCache, solver, collisionConfiguration, softBodySolver );
+//     physicsWorld.setGravity( new Ammo.btVector3( 0, -9.8, 0 ) );
+//     physicsWorld.getWorldInfo().set_m_gravity( new Ammo.btVector3( 0, -9.8, 0 ) );
+
+//     transformAux1 = new Ammo.btTransform();
+
+//     world = new CANNON.World({
+//         gravity: new CANNON.Vec3(0, -9.81, 0)
+//     });
+
+// }
+
+// function setupGraphics(camerax, cameray, cameraz, camera_par, follow){
+
+//     //create clock for timing
+//     clock = new THREE.Clock();
     
-//     // If the value of seconds is less than 10, then display seconds with a leading zero
-//     if (seconds < 10) {
-//       seconds = `0${seconds}`;
+
+//     //create the scene
+//     scene = new THREE.Scene();
+//     const loader = new THREE.TextureLoader();
+//     // if (GAME_STOP){
+//     //     run_game1 = false;
+//     //     run_game2 = false;
+//     //     run_game3 = false;
+//     //     //console.log('here');
+//     // }
+//     if(run_game1){
+//         const texture = loader.load(
+//         'toy_room.jpg',
+//         () => {
+//         texture.mapping = THREE.EquirectangularReflectionMapping;
+//         texture.colorSpace = THREE.SRGBColorSpace;
+//         scene.background = texture;
+//         });
+//     } else if (run_game2){
+//         const texture = loader.load(
+//             'sky.jpg',
+//             () => {
+//             texture.mapping = THREE.EquirectangularReflectionMapping;
+//             texture.colorSpace = THREE.SRGBColorSpace;
+//             scene.background = texture;
+//             });
+
+//     } else {
+//         const texture = loader.load(
+//             'party.jpg',
+//             () => {
+//             texture.mapping = THREE.EquirectangularReflectionMapping;
+//             texture.colorSpace = THREE.SRGBColorSpace;
+//             scene.background = texture;
+//             });
 //     }
+    
+
+//     //scene.background = new THREE.Color( 0xbfd1e5 );
+
+//     //create camera
+//     // camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.2, 5000 );
+//     // camera.position.set( 0, 30, 20 );
+//     // camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+//     camera = new THREE.PerspectiveCamera(camera_par[0], camera_par[1], camera_par[2], camera_par[3]);
+//     camera.position.set(camerax, cameray, cameraz);
+//     scene.add(camera);
+
+//     // camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.2, 2000 );
+
+//     // scene = new THREE.Scene();
+//     // scene.background = new THREE.Color( 0xbfd1e5 );
+
+//     //camera.position.set( - 12, 7, 4 );
+
+
+//     if (follow == 'ball'){
+//         followCam.position.copy(camera.position);
+//         scene.add(followCam);
+//         followCam.parent = ballObject;
+//     } else if (follow == 'car'){
+//         followCam.position.copy(camera.position);
+//         scene.add(followCam);
+//         followCam.parent = Character;
+//     }
+    
+
+//     //Add hemisphere light
+//     let hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
+//     hemiLight.color.setHSL( 0.6, 0.6, 0.6 );
+//     hemiLight.groundColor.setHSL( 0.1, 1, 0.4 );
+//     hemiLight.position.set( 0, 50, 0 );
+//     scene.add( hemiLight );
+
+//     //Add directional light
+//     let dirLight = new THREE.DirectionalLight( 0xffcc00 , 1);
+//     dirLight.color.setHSL( 1,1,1 ); //0.1, 1, 0.95
+//     if(run_game3){
+//         dirLight.position.set( 0, 10, 0 ); //-1, 1.75, 1
+//         dirLight.position.multiplyScalar( 100 );
+//     } else {
+//         dirLight.position.set( 1, 1, 1 ); //-1, 1.75, 1
+//         dirLight.position.multiplyScalar( 100 );
+//     }
+    
+    
+//     scene.add( dirLight );
+
+//     dirLight.castShadow = true;
+
+//     dirLight.shadow.mapSize.width = 2048;
+//     dirLight.shadow.mapSize.height = 2048;
+
+//     let d = 50;
+
+//     dirLight.shadow.camera.left = -d;
+//     dirLight.shadow.camera.right = d;
+//     dirLight.shadow.camera.top = d;
+//     dirLight.shadow.camera.bottom = -d;
+
+//     dirLight.shadow.camera.far = 13500;
+
+//     textureLoader = new THREE.TextureLoader();
+
+//     //Setup the renderer
+//     renderer = new THREE.WebGLRenderer( { antialias: true } );
+//     renderer.setClearColor( 0xbfd1e5 );
+//     renderer.setPixelRatio( window.devicePixelRatio );
+//     renderer.setSize( window.innerWidth, window.innerHeight );
+//     document.body.appendChild( renderer.domElement );
+
+//     renderer.gammaInput = true;
+//     renderer.gammaOutput = true;
+
+//     renderer.shadowMap.enabled = true;
+//     //if (run_game1 || run_game2){
+//         const controls = new THREE.OrbitControls( camera, renderer.domElement );
+//         //controls.target.set( 0, 1, 0 );
+//         controls.update();
+//         controls.enableDampling = true;
+//         console.log('initialized');
+//     //} else {
+//         // controls = new PointerLockControls( camera, document.body );
+//         // velocity = new THREE.Vector3();
+//         // document.addEventListener('click', () => {
+//         //     controls.lock();
+//         //     console.log('qui');
+//         // });
+//         // controls.addEventListener( 'lock', function () {
+//         //     console.log('Pointer locked')
+//         //     // instructions.style.display = 'none';
+//         //     // blocker.style.display = 'none';
+
+//         // } );
+
+//         // controls.addEventListener( 'unlock', function () {
+//         //     console.log('Pointer unlocked')
+//         //     // blocker.style.display = 'block';
+//         //     // instructions.style.display = '';
+
+//         // } );
+
+//         //scene.add( controls.getObject() );
+
+//     //}
+
+
+// }
+
+// function renderFrame(){
+    
+//     let deltaTime = clock.getDelta();
+//     // let time = performance.now();
+//     // let deltaTime = (time - prevTime) / 1000;
+//     if (run_game2){
+//         moveBall(); 
+//         camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()), 0.085);
+//         //camera.lookAt(ballObject.position.x, ballObject.position.y + .5, ballObject.position.z);
+//         camera.position.set(ballObject.position.x, ballObject.position.y + 10, ballObject.position.z + 10);
+//         //checkCollision();
+//         if(left_towels == 0 ){
+//             document.getElementById('game_over').style.display = 'grid';
+//             run_game2 = false;
+//         }
+//     } else if (run_game3){
+//         //console.log('game3');
+//         //moveCar();
+//         moveBall(); 
+//         camera.position.lerp(followCam.getWorldPosition(new THREE.Vector3()), 0.085);
+//         //camera.lookAt(ballObject.position.x, ballObject.position.y + .5, ballObject.position.z);
+//         camera.position.set(Character.position.x, Character.position.y + 10, Character.position.z + 10);
+//         // const time = performance.now();
+//         // const delta = (time - prevTime) / 1000;        
+//         // if (controls.isLocked == true){
+//         //     // raycaster.ray.origin.copy( controls.getObject().position );
+//         //     // //console.log(controls.getObject().position);
+//         //     // //console.log(raycaster);
+//         //     // //cacca
+//         //     // raycaster.ray.origin.y -= 10;
+
+//         //     // const intersections = raycaster.intersectObjects( scene.children, false );
+            
+
+//         //     // const onObject = intersections.length > 0;
+//         //     //console.log(onObject);
+
+//         //     //const delta = ( time - prevTime ) / 1000;
+//         //     //console.log(delta);
+//         //     velocity.x -= velocity.x * 10.0 * deltaTime;
+//         //     velocity.z -= velocity.z * 10.0 * deltaTime;
+
+//         //     velocity.y -= 9.8 * 100.0 * deltaTime; // 100.0 = mass
+//         //     //console.log(moveDirection.forward - moveDirection.backward);
+//         //     direction.z = moveDirection.forward - moveDirection.back;
+//         //     //console.log(direction.z);
+//         //     direction.x = moveDirection.right - moveDirection.left;
+//         //     direction.normalize(); // this ensures consistent movements in all directions
+
+//         //     if ( moveDirection.forward || moveDirection.back ){
+//         //         //console.log('avanti');
+//         //         velocity.z -= direction.z * 400.0 * deltaTime;
+
+//         //         //console.log(direction.z);
+//         //     } 
+//         //     if ( moveDirection.left || moveDirection.right ){
+//         //         //console.log('di lato');
+//         //         velocity.x -= direction.x * 400.0 * deltaTime;
+//         //         //console.log(velocity.x);
+//         //     } 
+
+//         //     // if ( onObject === true ) {
+
+//         //     //     velocity.y = Math.max( 0, velocity.y );
+//         //     //     canJump = true;
+
+//         //     // }
+
+//         //     controls.moveRight( - velocity.x * deltaTime );
+//         //     controls.moveForward( - velocity.z * deltaTime );
+
+//         //     //controls.getObject().position.y += ( velocity.y * deltaTime ); // new behavior
+
+//         //     // if ( controls.getObject().position.y < 10 ) {
+
+//         //     //     velocity.y = 0;
+//         //     //     controls.getObject().position.y = 10;
+
+//         //     //     canJump = true;
+
+//         //     // }
+//         // }
+        
+//         //prevtime = performance.now();
+				
+//         //camera.rotation.set(Character.rotation.x, Character.rotation.y, Character.rotation.z);
+//         if (hit_baloons.length != 0 && !stopAnimate) {
+//             //console.log(deltaTime);
+//             setTimeout( function() {
+//                 stopAnimate = true;
+//               }, 100);
+//             explode(hit_baloons[0].geometry);
+        
+//         } else {
+//            let baloon = hit_baloons.pop()
+//            scene.remove(baloon);
+//            stopAnimate = false;
+           
+//         }
+
+//         if (left_enemy === 0){
+//             document.getElementById('game_over').style.display = 'grid';
+//             run_game3 = false;
+//         }
+//         //prevTime = performance.now();
+//         //explode();
+//     }
+    
+//     //moveKinematic();
+//     updatePhysics( deltaTime );
+//     //explode();
+
+//     renderer.render( scene, camera );
+
+//     requestAnimationFrame( renderFrame );
+
+// }
+
+// // function startTimer() {
+// //     timerInterval = setInterval(() => {
+// //         timePassed = timePassed += 1;
+// //         timeLeft = TIME_LIMIT - timePassed;
+// //         if(run_game1){
+// //             document.getElementById("Countdown1").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
+// //         } else if (run_game2){
+// //             document.getElementById("Countdown2").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
+// //         } else if (run_game3){
+// //             document.getElementById("Countdown3").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
+// //         }
+        
+// //         // setCircleDasharray();
+// //         // setRemainingPathColor(timeLeft);
+    
+// //         if (timeLeft === 0) {
+// //             //GAME_STOP = true;
+// //             // run_game1 = false;
+// //             // run_game2 = false;
+// //             // run_game3 = false;
+// //             document.getElementById("game_over").style.display = 'grid';
+// //             timePassed = 0;
+// //             timeLeft = TIME_LIMIT;
+            
+// //             //start();
+// //             // while(scene.children.length > 0){ 
+// //             //     scene.remove(scene.children[0]); 
+// //             // }
+            
+// //         }
+// //     }, 1000);
+// // }
+
+// // function formatTimeLeft(time) {
+// //     // The largest round integer less than or equal to the result of time divided being by 60.
+// //     const minutes = Math.floor(time / 60);
+    
+// //     // Seconds are the remainder of the time divided by 60 (modulus operator)
+// //     let seconds = time % 60;
+    
+// //     // If the value of seconds is less than 10, then display seconds with a leading zero
+// //     if (seconds < 10) {
+// //       seconds = `0${seconds}`;
+// //     }
   
-//     // The output in MM:SS format
-//     return `${minutes}:${seconds}`;
-//   }
+// //     // The output in MM:SS format
+// //     return `${minutes}:${seconds}`;
+// //   }
 
 
-function setupEventHandlers(){
+// function setupEventHandlers(){
 
-    window.addEventListener( 'keydown', handleKeyDown, false);
-    window.addEventListener( 'keyup', handleKeyUp, false);
-    window.addEventListener( 'mousedown', onMouseDown, false );
-    window.addEventListener( 'mousemove', onMouseMove, false);
+//     window.addEventListener( 'keydown', handleKeyDown, false);
+//     window.addEventListener( 'keyup', handleKeyUp, false);
+//     window.addEventListener( 'mousedown', onMouseDown, false );
+//     window.addEventListener( 'mousemove', onMouseMove, false);
 
-}
+// }
 
-function handleKeyDown(event){
+// function handleKeyDown(event){
 
-    let keyCode = event.keyCode;
+//     let keyCode = event.keyCode;
 
-    switch(keyCode){
+//     switch(keyCode){
 
-        case 87: //W: FORWARD
-            moveDirection.forward = 1
-            break;
+//         case 87: //W: FORWARD
+//             moveDirection.forward = 1
+//             break;
             
-        case 83: //S: BACK
-            moveDirection.back = 1
-            break;
+//         case 83: //S: BACK
+//             moveDirection.back = 1
+//             break;
             
-        case 65: //A: LEFT
-            moveDirection.left = 1
-            break;
+//         case 65: //A: LEFT
+//             moveDirection.left = 1
+//             break;
             
-        case 68: //D: RIGHT
-            moveDirection.right = 1
-            break;
+//         case 68: //D: RIGHT
+//             moveDirection.right = 1
+//             break;
 
-        // case 73: //↑: FORWARD
-        //     kMoveDirection.forward = 1
-        //     break;
+//         // case 73: //↑: FORWARD
+//         //     kMoveDirection.forward = 1
+//         //     break;
             
-        // case 75: //↓: BACK
-        //     kMoveDirection.back = 1
-        //     break;
+//         // case 75: //↓: BACK
+//         //     kMoveDirection.back = 1
+//         //     break;
             
-        case 74: //J: LEFT
-            rotate.left = 1;//0.1
-            break;
+//         case 74: //J: LEFT
+//             rotate.left = 1;//0.1
+//             break;
             
-        case 76: //L: RIGHT
-            rotate.right = 1;//0.1
-            break;
+//         case 76: //L: RIGHT
+//             rotate.right = 1;//0.1
+//             break;
 
-        case 75: //K: LEFT
-            roll.down = 1;//0.1
-            break;
+//         case 75: //K: LEFT
+//             roll.down = 1;//0.1
+//             break;
             
-        case 73: //I: RIGHT
-            roll.up = 1;//0.1
-            break;
+//         case 73: //I: RIGHT
+//             roll.up = 1;//0.1
+//             break;
 
-        case 32: //: SPACE
-            if (run_game3){
-                checkCollision();
-            } else if (run_game2){
-                moveDirection.up = 1;
-                checkCollision();
-            }
-            break;
+//         case 32: //: SPACE
+//             if (run_game3){
+//                 checkCollision();
+//             } else if (run_game2){
+//                 moveDirection.up = 1;
+//                 checkCollision();
+//             }
+//             break;
         
             
-    }
-}
+//     }
+// }
 
-function handleKeyUp(event){
-    let keyCode = event.keyCode;
+// function handleKeyUp(event){
+//     let keyCode = event.keyCode;
 
-    switch(keyCode){
-        case 87: //FORWARD
-            moveDirection.forward = 0
-            break;
+//     switch(keyCode){
+//         case 87: //FORWARD
+//             moveDirection.forward = 0
+//             break;
             
-        case 83: //BACK
-            moveDirection.back = 0
-            break;
+//         case 83: //BACK
+//             moveDirection.back = 0
+//             break;
             
-        case 65: //LEFT
-            moveDirection.left = 0
-            break;
+//         case 65: //LEFT
+//             moveDirection.left = 0
+//             break;
             
-        case 68: //RIGHT
-            moveDirection.right = 0
-            break;
+//         case 68: //RIGHT
+//             moveDirection.right = 0
+//             break;
 
-        // case 73: //↑: FORWARD
-        //     kMoveDirection.forward = 0
-        //     break;
+//         // case 73: //↑: FORWARD
+//         //     kMoveDirection.forward = 0
+//         //     break;
             
-        // case 75: //↓: BACK
-        //     kMoveDirection.back = 0
-        //     break;
+//         // case 75: //↓: BACK
+//         //     kMoveDirection.back = 0
+//         //     break;
             
-        case 74: //←: LEFT
-            rotate.left = 0
-            break;
+//         case 74: //←: LEFT
+//             rotate.left = 0
+//             break;
             
-        case 76: //→: RIGHT
-            rotate.right = 0
-            break;
+//         case 76: //→: RIGHT
+//             rotate.right = 0
+//             break;
 
-        case 75: //K: LEFT
-            roll.down = 0
-            break;
+//         case 75: //K: LEFT
+//             roll.down = 0
+//             break;
             
-        case 73: //I: RIGHT
-            roll.up = 0
-            break;
+//         case 73: //I: RIGHT
+//             roll.up = 0
+//             break;
 
-        case 32: //: SPACE
-            if (run_game2){
-                moveDirection.up = -1;
-            }
-            break;
-    }
+//         case 32: //: SPACE
+//             if (run_game2){
+//                 moveDirection.up = -1;
+//             }
+//             break;
+//     }
 
-}
+// }
 
 function onMouseDown ( event ) {
 
@@ -590,21 +590,21 @@ function onMouseDown ( event ) {
     // };
 
     document.getElementById('game1-button').onclick = () => {
-        run_game1 = false;
+        //run_game1 = false;
         document.getElementById('intro-panel').style.display = 'none';
         document.getElementById('instruction1').style.display = 'grid';
         //start();
     };
 
     document.getElementById('game2-button').onclick = () => {
-        run_game2 = false;
+        //run_game2 = false;
         document.getElementById('intro-panel').style.display = 'none';
         document.getElementById('instruction2').style.display = 'grid';
         //start();
     };
 
     document.getElementById('game3-button').onclick = () => {
-        run_game3 = false;
+        //run_game3 = false;
         document.getElementById('intro-panel').style.display = 'none';
         document.getElementById('instruction3').style.display = 'grid';
         //start();
@@ -619,26 +619,26 @@ function onMouseDown ( event ) {
     //     document.getElementById('score3').style.display = 'none';
     //     start();
     // };
-    document.getElementById('start2-button').onclick = () => {
-        run_game2 = true;
-        GAME_STOP = false;
-        document.getElementById('intro-panel').style.display = 'none';
-        document.getElementById('instruction2').style.display = 'none';
-        document.getElementById('score2').style.display = 'grid';
-        document.getElementById('score3').style.display = 'none';
-        document.getElementById('score1').style.display = 'none';
-        start();
-    };
-    document.getElementById('start3-button').onclick = () => {
-        run_game3 = true;
-        GAME_STOP = false;
-        document.getElementById('intro-panel').style.display = 'none';
-        document.getElementById('instruction3').style.display = 'none';
-        document.getElementById('score2').style.display = 'none';
-        document.getElementById('score3').style.display = 'grid';
-        document.getElementById('score1').style.display = 'none';
-        start();
-    };
+    // document.getElementById('start2-button').onclick = () => {
+    //     run_game2 = true;
+    //     GAME_STOP = false;
+    //     document.getElementById('intro-panel').style.display = 'none';
+    //     document.getElementById('instruction2').style.display = 'none';
+    //     document.getElementById('score2').style.display = 'grid';
+    //     document.getElementById('score3').style.display = 'none';
+    //     document.getElementById('score1').style.display = 'none';
+    //     start();
+    // };
+    // document.getElementById('start3-button').onclick = () => {
+    //     run_game3 = true;
+    //     GAME_STOP = false;
+    //     document.getElementById('intro-panel').style.display = 'none';
+    //     document.getElementById('instruction3').style.display = 'none';
+    //     document.getElementById('score2').style.display = 'none';
+    //     document.getElementById('score3').style.display = 'grid';
+    //     document.getElementById('score1').style.display = 'none';
+    //     start();
+    // };
 
     document.getElementById('Back1-button').onclick = () => {
         run_game1 = false;
@@ -669,100 +669,100 @@ function onMouseDown ( event ) {
         document.getElementById('instruction3').style.display = 'none';
         //start();
     };
-    document.getElementById('again1-button').onclick = () => {
-        run_game1 = true;
-        run_game2 = false;
-        run_game3 = false;
-        GAME_STOP = false;
-        document.getElementById('intro-panel').style.display = 'none';
-        document.getElementById('instruction1').style.display = 'none';
-        document.getElementById('score1').style.display = 'grid';
-        document.getElementById('score2').style.display = 'none';
-        document.getElementById('score3').style.display = 'none';
-        document.getElementById('game_over').style.display = 'none';
-        start();
-    };
+//     document.getElementById('again1-button').onclick = () => {
+//         run_game1 = true;
+//         run_game2 = false;
+//         run_game3 = false;
+//         GAME_STOP = false;
+//         document.getElementById('intro-panel').style.display = 'none';
+//         document.getElementById('instruction1').style.display = 'none';
+//         document.getElementById('score1').style.display = 'grid';
+//         document.getElementById('score2').style.display = 'none';
+//         document.getElementById('score3').style.display = 'none';
+//         document.getElementById('game_over').style.display = 'none';
+//         start();
+//     };
 
-    document.getElementById('back-again-button').onclick = () => {
-        run_game1 = false;
-        run_game2 = false;
-        run_game3 = false;
-        GAME_STOP = false;
-        document.getElementById('intro-panel').style.display = 'grid';
-        document.getElementById('instruction1').style.display = 'none';
-        document.getElementById('score1').style.display = 'none';
-        document.getElementById('score2').style.display = 'none';
-        document.getElementById('score3').style.display = 'none';
-        document.getElementById('game_over').style.display = 'none';
-        //start();
-    };
+//     document.getElementById('back-again-button').onclick = () => {
+//         run_game1 = false;
+//         run_game2 = false;
+//         run_game3 = false;
+//         GAME_STOP = false;
+//         document.getElementById('intro-panel').style.display = 'grid';
+//         document.getElementById('instruction1').style.display = 'none';
+//         document.getElementById('score1').style.display = 'none';
+//         document.getElementById('score2').style.display = 'none';
+//         document.getElementById('score3').style.display = 'none';
+//         document.getElementById('game_over').style.display = 'none';
+//         //start();
+//     };
 
-    mouseCoords.set(
-        ( event.clientX / window.innerWidth ) * 2 - 1,
-        - ( event.clientY / window.innerHeight ) * 2 + 1
-    );
+//     mouseCoords.set(
+//         ( event.clientX / window.innerWidth ) * 2 - 1,
+//         - ( event.clientY / window.innerHeight ) * 2 + 1
+//     );
 
     
 
-    // Creates a ball and throws it
-    if (run_game1){
-        raycaster.setFromCamera( mouseCoords, camera );
-        tmpPos.copy( raycaster.ray.direction );
-        tmpPos.add( raycaster.ray.origin );
+//     // Creates a ball and throws it
+//     if (run_game1){
+//         raycaster.setFromCamera( mouseCoords, camera );
+//         tmpPos.copy( raycaster.ray.direction );
+//         tmpPos.add( raycaster.ray.origin );
 
 
-        let pos = {x: tmpPos.x, y: tmpPos.y, z: tmpPos.z};
-        let radius = 1;
-        let quat = {x: 0, y: 0, z: 0, w: 1};
-        let mass = 10;
+//         let pos = {x: tmpPos.x, y: tmpPos.y, z: tmpPos.z};
+//         let radius = 1;
+//         let quat = {x: 0, y: 0, z: 0, w: 1};
+//         let mass = 10;
 
-        //threeJS Section
-        let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: createRandomColor()}));
+//         //threeJS Section
+//         let ball = new THREE.Mesh(new THREE.SphereBufferGeometry(radius), new THREE.MeshPhongMaterial({color: createRandomColor()}));
 
-        ball.position.set(pos.x, pos.y, pos.z);
+//         ball.position.set(pos.x, pos.y, pos.z);
 
-        ball.castShadow = true;
-        ball.receiveShadow = true;
+//         ball.castShadow = true;
+//         ball.receiveShadow = true;
 
-        scene.add(ball);
+//         scene.add(ball);
 
 
-        //Ammojs Section
-        let transform = new Ammo.btTransform();
-        transform.setIdentity();
-        transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
-        transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
-        let motionState = new Ammo.btDefaultMotionState( transform );
+//         //Ammojs Section
+//         let transform = new Ammo.btTransform();
+//         transform.setIdentity();
+//         transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+//         transform.setRotation( new Ammo.btQuaternion( quat.x, quat.y, quat.z, quat.w ) );
+//         let motionState = new Ammo.btDefaultMotionState( transform );
 
-        let colShape = new Ammo.btSphereShape( radius );
-        colShape.setMargin( 0.05 );
+//         let colShape = new Ammo.btSphereShape( radius );
+//         colShape.setMargin( 0.05 );
 
-        let localInertia = new Ammo.btVector3( 0, 0, 0 );
-        colShape.calculateLocalInertia( mass, localInertia );
+//         let localInertia = new Ammo.btVector3( 0, 0, 0 );
+//         colShape.calculateLocalInertia( mass, localInertia );
 
-        let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
-        let body = new Ammo.btRigidBody( rbInfo );
+//         let rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, colShape, localInertia );
+//         let body = new Ammo.btRigidBody( rbInfo );
 
-        physicsWorld.addRigidBody( body );
+//         physicsWorld.addRigidBody( body );
 
-        tmpPos.copy( raycaster.ray.direction );
-        tmpPos.multiplyScalar( 100 );
+//         tmpPos.copy( raycaster.ray.direction );
+//         tmpPos.multiplyScalar( 100 );
 
-        body.setLinearVelocity( new Ammo.btVector3( tmpPos.x, tmpPos.y, tmpPos.z ) );
+//         body.setLinearVelocity( new Ammo.btVector3( tmpPos.x, tmpPos.y, tmpPos.z ) );
 
-        ball.userData.physicsBody = body;
-        rigidBodies.push(ball);
-    } 
+//         ball.userData.physicsBody = body;
+//         rigidBodies.push(ball);
+//     } 
     
 
-}
+// }
 
-function onMouseMove(event){
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+// function onMouseMove(event){
+//     const width = window.innerWidth;
+//     const height = window.innerHeight;
 
-    mouseCoords.x = (event.clientX / width * 2 - 1);
-    mouseCoords.y = -(event.clientY / height) * 2 + 1;
+//     mouseCoords.x = (event.clientX / width * 2 - 1);
+//     mouseCoords.y = -(event.clientY / height) * 2 + 1;
     //console.log(mouseCoords);
 }
 

@@ -40,6 +40,7 @@ function start (){
     ammoTmpQuat = new Ammo.btQuaternion();
     setupEventHandlers();
 
+    document.getElementById('score3').style.display = 'grid';
     camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
     setupGraphics(0, 5, 10, camera_par, follow = 'car');
     setupPhysicsWorld();
@@ -177,7 +178,7 @@ function renderFrame(){
 
     if (left_enemy === 0){
         setTimeout( function() {
-            document.getElementById('win').style.display = 'grid';
+            document.getElementById('win3').style.display = 'grid';
             run_game3 = false;
             }, 1000);
         
@@ -200,7 +201,7 @@ function startTimer() {
         
     
         if (timeLeft === 0 && left_enemy > 0) {
-            document.getElementById("game_over").style.display = 'grid';
+            document.getElementById("game_over3").style.display = 'grid';
             timePassed = 0;
             timeLeft = TIME_LIMIT;
         }

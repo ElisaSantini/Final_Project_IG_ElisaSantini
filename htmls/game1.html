@@ -25,46 +25,35 @@
             <!-- <div id="distance">Distance: </div> -->
             <div id="points">Points: 0/130</div>
         </div>
-        <div id="score2">
-            <div id="title">Score</div>
-            <div class="line"></div>
-            <div id="Countdown2">Countdown: </div>
-            <!-- <div id="distance">Distance: </div> -->
-            <div id="points2">Towels left:</div>
-        </div>
-        <div id="score3">
-            <div id="title">Score</div>
-            <div class="line"></div>
-            <div id="Countdown3">Countdown: </div>
-            <!-- <div id="distance">Distance: </div> -->
-            <div id="points3">Baloons left:</div>
-        </div>
+       
 
-        <div id="game_over">
-            <div id="game_over_column">
-              <div id="game_over_title">Game over! Your brother came in and started crying. Your mum will surely scold you</div>
+        <div id="game_over1">
+            <div id="instruction1_column">
+              <div id="instrucion1-title">Game over!</div>
+              <h1>Your brother came in and started crying. Your mum will surely scold you</h1>
               <!-- <div id="game_over_tscore">Total Score: <div id="game-over-score"></div></div>
               <div id="game_over_distance">Distance: <div id="game-over-distance"></div></div>
               <div id="game_over_points">Points: <div id="game-over-score"></div></div> -->
-              <button onclick="refresh()">Play Again</button>
-              <button onclick="menu()">Menu</button>
+              <button id = "try-again-button" onclick="refresh()">Try Again</button>
+              <button id = "Back1-button" onclick="menu()">Menu</button>
               <!-- <button id="again1-button">Play Again</button> -->
               <!-- <br> -->
               <!-- <button id="back-again-button">Menu</button> -->
             </div>
         </div>
 
-        <div id="win">
-            <div id="win_column">
-              <div id="win_title">You Won! Your brother's tower was conquered!</div>
+        <div id="win1">
+            <div id="instruction1_column">
+              <div id="instrucion1-title">You Won!</div>
+              <h1>Your brother's tower was conquered!</h1>
               <!-- <div id="game_over_tscore">Total Score: <div id="game-over-score"></div></div>
               <div id="game_over_distance">Distance: <div id="game-over-distance"></div></div>
               <div id="game_over_points">Points: <div id="game-over-score"></div></div> -->
               <!-- <button id="again1-button">Play Again</button> -->
               <!-- <br> -->
               <!-- <button id="back-again-button">Menu</button> -->
-              <button onclick="refresh()">Play Again</button>
-              <button onclick="menu()">Menu</button>
+              <button id = "try-again-button" onclick="refresh()">Play Again</button>
+              <button id = "Back1-button" onclick="menu()">Menu</button>
             </div>
         </div>
 
@@ -77,28 +66,13 @@
         </div>
 
 
-        <!-- <div id="loading">
-            <div id="loading_column">
-              <div id="loading_title">loading</div>
-            </div>
-            <div id="loading_gif"></div>
-            
-        </div> -->
-
-        <!-- <div id="game-over-panel">
-            <div id="game-over-column">
-                <div id="game-over-title">GAME OVER!</div>
-                <div id="game-over-distance-row">Distance: <div id="game-over-distance"></div></div>
-                <button id="try-again-button">TRY AGAIN</button>
-            </div>
-        </div> -->
 
         <script>
             function refresh() {
                 window.location.href = "game1.html";
             }
             function menu() {
-                window.location.href = "prova.html";
+                window.location.href = "main.html";
             }
             
         </script>

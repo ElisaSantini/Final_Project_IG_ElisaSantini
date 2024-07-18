@@ -30,8 +30,6 @@ function start (){
     setupEventHandlers();
     
     document.getElementById('score1').style.display = 'grid';
-    document.getElementById('score2').style.display = 'none';
-    document.getElementById('score3').style.display = 'none';
     camera_par = [100, window.innerWidth / window.innerHeight, 0.2, 5000];  
     setupGraphics(0, 30, 70, camera_par, follow = '');
     setupPhysicsWorld();
@@ -164,7 +162,7 @@ function renderFrame(){
         shot = false;
         //document.getElementById('loading').style.display = 'grid';
         setTimeout( function() {
-            document.getElementById('win').style.display = 'grid';
+            document.getElementById('win1').style.display = 'grid';
             }, 2000);
         
         
@@ -187,7 +185,7 @@ function startTimer() {
         document.getElementById("Countdown1").innerHTML = 'Coundown: ' + formatTimeLeft(timeLeft);
         
         if (timeLeft === 0) {
-            document.getElementById("game_over").style.display = 'grid';
+            document.getElementById("game_over1").style.display = 'grid';
             timePassed = 0;
             timeLeft = TIME_LIMIT;
             

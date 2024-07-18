@@ -35,9 +35,7 @@ function start (){
     ammoTmpQuat = new Ammo.btQuaternion();
     setupEventHandlers();
     
-    document.getElementById('score1').style.display = 'none';
     document.getElementById('score2').style.display = 'grid';
-    document.getElementById('score3').style.display = 'none';
     setupPhysicsWorld();
     camera_par = [70, window.innerWidth / window.innerHeight, 0.1, 100];  
     setupGraphics(0, 5, 10, camera_par, follow = 'ball'); //ball
@@ -153,8 +151,8 @@ function renderFrame(){
     camera.position.set(ballObject.position.x, ballObject.position.y + 10, ballObject.position.z + 10);
     if(left_towels == 0 ){
         setTimeout( function() {
-            document.getElementById('win').style.display = 'grid';
-            }, 3000);
+            document.getElementById('win2').style.display = 'grid';
+            }, 2000);
         
     }
     
@@ -176,7 +174,7 @@ function startTimer() {
         
     
         if (timeLeft === 0 && left_towels > 0) {           
-            document.getElementById("game_over").style.display = 'grid';
+            document.getElementById("game_over2").style.display = 'grid';
             timePassed = 0;
             timeLeft = TIME_LIMIT;
             
